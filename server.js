@@ -2,19 +2,13 @@ const express = require('express');
 
 const { v4: uuidv4 } = require('uuid');
 
+const db = require('./db');
+
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
-
-const db = [
-  { id: 1, author: 'John Doe', text: 'This company is worth every coin!' },
-  { id: 2, author: 'Amanda Doe', text: 'They really know how to make you happy.' },
-  { id: 3, author: 'Jane Doe', text: 'Some like it hot.'},
-  { id: 4, author: 'Jack Bratbury', text: 'Not recommended'},
-  { id: 5, author: 'Ellen Stock', text: 'The best ever'},
-];
 
 const okMessage = {message: 'OK!'};
 
@@ -23,15 +17,15 @@ const v4options = {
 };
 
 app.get('/testimonials', (req, res) => {
-  res.json(db);
+  res.json(db.testimonials);
 });
 
 app.get('/testimonials/:id', (req, res) => {
-  res.json(db[`${req.params.id}`-1]);
+  res.json(db.testimonials[`${req.params.id}`-1]);
 });
 
 app.get('/random', (req, res) => {
-  const template = db[Math.floor(Math.random() * db.length)];
+  const template = db.testimonials[Math.floor(Math.random() * db.length)];
   res.json(template);
 });
 
@@ -42,22 +36,86 @@ app.post('/testimonials', (req, res) => {
     author: req.body.author,
     text: req.body.text
   };
-  db.push(postData);
+  db.testimonials.push(postData);
   res.json(okMessage);
 });
 
 app.put('/testimonials/:id', (req, res) => {
   const { author, text} = req.body;
-  const editRecord = db.find(item => item.id == `${req.params.id}`);
+  const editRecord = db.testimonials.find(item => item.id == `${req.params.id}`);
   editRecord.author = req.body.author,
   editRecord.text = req.body.text,
   res.json(okMessage);
 });
 
 app.delete('/testimonials/:id', (req, res) => {
-  db.splice(`${req.params.id}`-1, 1);
+  db.testimonials.splice(`${req.params.id}`-1, 1);
   res.json(okMessage);
-})
+});
+/*
+app.get('/testimonials', (req, res) => {
+  res.json(db.testimonials);
+});
+
+app.get('/testimonials', (req, res) => {
+  res.json(db.testimonials);
+});
+
+app.post('/testimonials', (req, res) => {
+  const {author, text, id} = req.body;
+  const postData = {
+    id: uuidv4(),
+    author: req.body.author,
+    text: req.body.text
+  };
+  db.testimonials.push(postData);
+  res.json(okMessage);
+});
+
+app.put('/testimonials/:id', (req, res) => {
+  const { author, text} = req.body;
+  const editRecord = db.testimonials.find(item => item.id == `${req.params.id}`);
+  editRecord.author = req.body.author,
+  editRecord.text = req.body.text,
+  res.json(okMessage);
+});
+
+app.delete('/testimonials/:id', (req, res) => {
+  db.testimonials.splice(`${req.params.id}`-1, 1);
+  res.json(okMessage);
+});
+
+app.get('/testimonials', (req, res) => {
+  res.json(db.testimonials);
+});
+
+app.get('/testimonials', (req, res) => {
+  res.json(db.testimonials);
+});
+
+app.post('/testimonials', (req, res) => {
+  const {author, text, id} = req.body;
+  const postData = {
+    id: uuidv4(),
+    author: req.body.author,
+    text: req.body.text
+  };
+  db.testimonials.push(postData);
+  res.json(okMessage);
+});
+
+app.put('/testimonials/:id', (req, res) => {
+  const { author, text} = req.body;
+  const editRecord = db.testimonials.find(item => item.id == `${req.params.id}`);
+  editRecord.author = req.body.author,
+  editRecord.text = req.body.text,
+  res.json(okMessage);
+});
+
+app.delete('/testimonials/:id', (req, res) => {
+  db.testimonials.splice(`${req.params.id}`-1, 1);
+  res.json(okMessage);
+});*/
 
 app.use((req, res) => {
     res.status(404).send('404 not found...');

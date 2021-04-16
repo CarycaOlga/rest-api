@@ -11,6 +11,9 @@ app.use(express.json());
 const db = [
   { id: 1, author: 'John Doe', text: 'This company is worth every coin!' },
   { id: 2, author: 'Amanda Doe', text: 'They really know how to make you happy.' },
+  { id: 3, author: 'Jane Doe', text: 'Some like it hot.'},
+  { id: 4, author: 'Jack Bratbury', text: 'Not recommended'},
+  { id: 5, author: 'Ellen Stock', text: 'The best ever'},
 ];
 
 const okMessage = {message: 'OK!'};
@@ -27,7 +30,7 @@ app.get('/testimonials/:id', (req, res) => {
   res.json(db[`${req.params.id}`-1]);
 });
 
-app.get('/testimonials/random', (req, res) => {
+app.get('/random', (req, res) => {
   const template = db[Math.floor(Math.random() * db.length)];
   res.json(template);
 });

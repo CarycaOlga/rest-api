@@ -52,68 +52,75 @@ app.delete('/testimonials/:id', (req, res) => {
   db.testimonials.splice(`${req.params.id}`-1, 1);
   res.json(okMessage);
 });
+
+app.get('/concerts', (req, res) => {
+  res.json(db.concerts);
+});
+
+app.get('/concerts/:id', (req, res) => {
+  res.json(db.concerts[`${req.params.id}`-1]);
+});
+
+app.post('/concerts', (req, res) => {
+  const {author, text, id} = req.body;
+  const postData = {
+    id: uuidv4(),
+    performer: req.body.performer,
+    genre: req.body.genre,
+    price: req.body.price,
+    day: req.body.day,
+    image: req.body.image
+  };
+  db.concerts.push(postData);
+  res.json(okMessage);
+});
+
+app.put('/concerts/:id', (req, res) => {
+  const { author, text} = req.body;
+  const editRecord = db.concerts.find(item => item.id == `${req.params.id}`);
+  editRecord.performer = req.body.performer,
+  editRecord.genre = req.body.genre,
+  editRecord.price = req.body.price,
+  editRecord.day = req.body.day,
+  editRecord.image = req.body.image
+  res.json(okMessage);
+});
+
+app.delete('/concerts/:id', (req, res) => {
+  db.concerts.splice(`${req.params.id}`-1, 1);
+  res.json(okMessage);
+});
+
 /*
-app.get('/testimonials', (req, res) => {
-  res.json(db.testimonials);
+app.get('/seats', (req, res) => {
+  res.json(db.seats);
 });
 
-app.get('/testimonials', (req, res) => {
-  res.json(db.testimonials);
+app.get('/seats/:id', (req, res) => {
+  res.json(db.seats);
 });
 
-app.post('/testimonials', (req, res) => {
+app.post('/seats', (req, res) => {
   const {author, text, id} = req.body;
   const postData = {
     id: uuidv4(),
     author: req.body.author,
     text: req.body.text
   };
-  db.testimonials.push(postData);
+  db.seats.push(postData);
   res.json(okMessage);
 });
 
-app.put('/testimonials/:id', (req, res) => {
+app.put('/seats/:id', (req, res) => {
   const { author, text} = req.body;
-  const editRecord = db.testimonials.find(item => item.id == `${req.params.id}`);
+  const editRecord = db.seats.find(item => item.id == `${req.params.id}`);
   editRecord.author = req.body.author,
   editRecord.text = req.body.text,
   res.json(okMessage);
 });
 
-app.delete('/testimonials/:id', (req, res) => {
-  db.testimonials.splice(`${req.params.id}`-1, 1);
-  res.json(okMessage);
-});
-
-app.get('/testimonials', (req, res) => {
-  res.json(db.testimonials);
-});
-
-app.get('/testimonials', (req, res) => {
-  res.json(db.testimonials);
-});
-
-app.post('/testimonials', (req, res) => {
-  const {author, text, id} = req.body;
-  const postData = {
-    id: uuidv4(),
-    author: req.body.author,
-    text: req.body.text
-  };
-  db.testimonials.push(postData);
-  res.json(okMessage);
-});
-
-app.put('/testimonials/:id', (req, res) => {
-  const { author, text} = req.body;
-  const editRecord = db.testimonials.find(item => item.id == `${req.params.id}`);
-  editRecord.author = req.body.author,
-  editRecord.text = req.body.text,
-  res.json(okMessage);
-});
-
-app.delete('/testimonials/:id', (req, res) => {
-  db.testimonials.splice(`${req.params.id}`-1, 1);
+app.delete('/seats/:id', (req, res) => {
+  db.seats.splice(`${req.params.id}`-1, 1);
   res.json(okMessage);
 });*/
 
